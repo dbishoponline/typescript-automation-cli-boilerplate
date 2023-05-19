@@ -1,0 +1,3 @@
+vault_secret_files:
+  - .env.secrets
+  - config.js

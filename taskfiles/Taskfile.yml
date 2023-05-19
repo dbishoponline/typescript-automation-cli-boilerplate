@@ -1,0 +1,76 @@
+# https://taskfile.dev
+# https://go-task.github.io/slim-sprig/
+# https://pkg.go.dev/text/template
+
+version: '3'
+
+### Silent mode disables echoing of commands before Task runs it.
+# silent: true
+
+vars:
+  GREETING: Hello, World!
+  SPACER: ===================
+  INFO: "\e[1;33m"
+  BOLD: "\e[1;97m"
+  NC: "\e[0m"
+
+  run_date:
+    sh: date '+%Y-%m-%d %H:%M:%S'
+
+  ENV: '{{ default "development"  .ENV }}'
+  # PROJECT: '{{ default "dylanbishop"  .PROJECT }}'
+  # ENV: '{{ default "production"  .env }}'
+
+  # DEVOPS_ENV_FILE: '{{ default "devops.env"  .DEVOPS_ENV_FILE }}'
+
+env:
+  ROOT_DIR: "{{.PWD}}"
+
+dotenv: ['./.env']
+
+includes:
+  devops:
+    taskfile: taskfiles/devops.Taskfile.yml
+
+  vault:
+    taskfile: taskfiles/vault.Taskfile.yml
+
+  helpers:
+    taskfile: taskfiles/helpers.Taskfile.yml
+
+  tools:
+    taskfile: taskfiles/tools.Taskfile.yml
+
+tasks:
+
+  default:
+    silent: true
+    cmds:
+      - task -l | grep "{{.CLI_ARGS}}:"
+      - '[ "{{.CLI_ARGS}}" != "" ] || echo "{{.INFO}}run: \"task -- {SECTION_NAME}\" for filtering tasks{{.NC}}"'
+  m0:
+    label: "{{.SPACER}}"
+    desc: "{{.SPACER}}{{.SPACER}}"
+
+  main:docs:
+    desc: run docs server at http://127.0.0.1:8000/
+    cmds:
+      # - pip install mkdocs
+      - mkdocs serve
+
+  test:
+    label: '{{.TASK}}'
+    desc: '{{.INFO}}test tasks{{.NC}}'
+    cmds:
+      - echo {{now | date "2006-01-02"}}
+      - echo "A few testst:"
+      - echo "{{.INFO}}{{.GREETING}}{{.NC}} in color mode"
+      - echo "{{.GREETING}} in default color"
+      - cmd: echo {{.CLI_ARGS}}
+        ignore_error: true
+      - echo $ENV
+      - echo {{.ENV}}
+      - echo $PROJECT_PORT
+      - echo {{.PROJECT_PORT}}
+
+

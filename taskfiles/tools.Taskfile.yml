@@ -1,0 +1,71 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+
+  _:
+    label: "{{.SPACER}}"
+    desc: "{{.SPACER}}{{.SPACER}}"
+
+  install-local-dns:
+    desc: Install dnsmasq & configure localhost using it.
+    cmds:
+      - ansible-playbook scripts/ansible/set_dnsmasq.yml --ask-become-pass
+
+  task-in-docker-init: # TODO: change name
+    desc: prepare environment to work with infrastructure via a Docker container
+    cmds:
+      - cd dmake-docker && docker build -t dmake-shell -f dmake.dockerfile --platform=linux/amd64 .
+
+  task-in-docker-run: # TODO: change name
+    desc: runs dmake docker container
+    cmds:
+      - "docker run -it --rm -w /root -v $(pwd):/root -v ~/.ssh/:/root/.ssh/:ro -v ~/.aws:/root/.aws:ro dmake-shell bash {{if ne .CLI_ARGS \"\"}} -c {{.CLI_ARGS}} {{else}} {{end}}"
+
+  task-in-docker-stop: # TODO: WIP
+    desc: stops dmake docker container
+    cmds:
+      - docker kill dmake-shell
+
+  dmake-run: # TODO: change name
+    desc: builds and starts the dmake docker container
+    cmds:
+      - task: task-in-docker-init
+      - task: task-in-docker-run
+
+  task-in-docker-set-env: # TODO: change name
+    desc: update your .sh files
+    cmds:
+      - echo '{{.TXT}}'
+    vars:
+      TXT: |
+        Add this text into your .bash_profile or .zshrc and restart your shell
+        =======================================================================
+        dtask(){
+            echo "task $@"
+            docker run -it --rm  \
+            -v $(pwd):/workdir \
+            -v ~/.kube:/root/.kube   \
+            -v ~/.aws:/root/.aws:ro  \
+            -v ~/.ssh:/root/.ssh:ro  \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -v /var/lib/docker:/var/lib/docker \
+            dmake-shell sh  -c "task $@"
+            }
+
+        dkubectl(){
+            docker run -it --rm  \
+            -v $(shell pwd):/workdir:ro \
+            -v ~/.kube:/root/.kube:ro \
+            dmake-shell sh  -c "kubectl $@"
+        }
+
+        =======================================================================
+
+  git-up:
+    cmds:
+      - git submodule update --init --recursive --remote
+      - git fetch --all --prune
+
+

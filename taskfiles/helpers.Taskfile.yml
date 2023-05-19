@@ -1,0 +1,46 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+
+  _:
+    label: "{{.SPACER}}"
+    desc: "{{.SPACER}}{{.SPACER}}"
+
+  docker-start-daemon:
+    desc: Start Docker Daemon
+    cmds:
+      - echo "{{.INFO}}Start Docker Daemon{{.NC}}"
+      - open /Applications/Docker.app
+
+  docker-network-prune:
+    desc: Prune Docker networks
+    cmds:
+      - echo "{{.INFO}}Prune Docker networks{{.NC}}"
+      - docker network prune -f
+
+  docker-destroy-all:
+    desc: Destroy all Docker containers and networks
+    cmds:
+      - echo "{{.INFO}}Destroy all Docker containers and networks{{.NC}}"
+      - docker stop $(docker ps -a -q)
+      - docker rm $(docker ps -a -q)
+      - echo "{{.INFO}}DONE{{.NC}}"
+
+  docker-start:
+    desc: starts Gatsby-stack docker services
+    cmds:
+      - docker-compose up -d
+
+  docker-stop:
+    desc: stops Gatsby-stack docker services
+    cmds:
+      - docker-compose down
+
+  docker-restart:
+    desc: restarts Gatsby-stack docker services
+    cmds:
+      - task: docker-stop
+      - task: docker-network-prune
+      - task: docker-start

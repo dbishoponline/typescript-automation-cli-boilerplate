@@ -1,0 +1,23 @@
+#
+# gatsby_stack Devops Taskfile
+#
+# https://taskfile.dev
+# https://github.com/go-task/task/blob/master/docs/usage.md
+
+version: '3'
+
+tasks:
+
+  _:
+    label: "{{.SPACER}}"
+    desc: "{{.SPACER}}{{.SPACER}}"
+
+  install:
+    desc: installs local deps
+    cmds:
+      - cd devops && task install
+
+  dmake:
+    desc: installs and starts dmake docker container for deploying
+    cmds:
+      - cd dmake-docker && task start

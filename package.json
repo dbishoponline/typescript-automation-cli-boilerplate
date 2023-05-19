@@ -1,0 +1,43 @@
+{
+  "name": "atlassian-automation",
+  "version": "1.0.0",
+  "description": "scripts to sync tempo and clerkinvoice together",
+  "main": "index.js",
+  "scripts": {
+    "exec": "node src/index.js -- ",
+    "dev": "nodemon src/index.js",
+    "build": "babel --presets @babel/preset-env -d dist/ src/",
+    "test": "jest --coverage",
+    "test-watch": "jest --coverage --watchAll",
+    "test-update-snapshot": "jest --updateSnapshot"
+  },
+  "author": "Dylan Bishop",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "jest": "^29.5.0",
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.43",
+    "nodemon": "^2.0.22",
+    "npm-check-updates": "^16.10.12",
+    "prettier": "^2.8.8",
+    "ramda": "^0.29.0",
+    "slack-node": "^0.1.8"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.8",
+    "@babel/core": "^7.12.9",
+    "@babel/preset-env": "^7.12.7",
+    "@babel/register": "^7.12.1",
+    "babel-eslint": "^10.1.0",
+    "debug": "^4.3.1",
+    "nyc": "^15.1.0",
+    "require-dir": "^1.2.0",
+    "run-sequence": "^2.2.1",
+    "sinon": "^9.2.1",
+    "xo": "^0.35.0"
+  },
+  "engines": {
+    "node": "19.x"
+  }
+}

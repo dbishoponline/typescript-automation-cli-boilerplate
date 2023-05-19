@@ -1,0 +1,25 @@
+{
+  "artificialDelayMilliseconds": 300,
+  "keepExistingTerminalsOpen": false,
+  "runOnStartup": true,
+  "terminals": [
+    {
+      "splitTerminals": [
+        {
+          "name": "root",
+          "commands": [
+            "n auto",
+            "yarn dev"
+          ]
+        },
+        {
+          "name": "dev start",
+          "commands": [
+            "n auto",
+            "yarn dev"
+          ]
+        }
+      ]
+    }
+  ]
+}
