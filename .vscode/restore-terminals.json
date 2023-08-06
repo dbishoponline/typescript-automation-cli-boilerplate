@@ -8,15 +8,13 @@
         {
           "name": "root",
           "commands": [
-            "n auto",
-            "yarn dev"
+            "n auto"
           ]
         },
         {
           "name": "dev start",
           "commands": [
-            "n auto",
-            "yarn dev"
+            "n auto"
           ]
         }
       ]

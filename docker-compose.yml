@@ -1,0 +1,24 @@
+version: '3'
+services:
+
+  #
+  # MongoDB Service
+  #
+  mongodb:
+    image: mongo:latest
+    container_name: time_log_mongodb
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - backend
+
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+    driver: local

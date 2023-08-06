@@ -26,7 +26,7 @@ vars:
 env:
   ROOT_DIR: "{{.PWD}}"
 
-dotenv: ['./.env']
+dotenv: ['./.env', './.env.secrets']
 
 includes:
   devops:
@@ -40,6 +40,9 @@ includes:
 
   tools:
     taskfile: taskfiles/tools.Taskfile.yml
+
+  timelog:
+    taskfile: taskfiles/timelog.Taskfile.yml
 
 tasks:
 

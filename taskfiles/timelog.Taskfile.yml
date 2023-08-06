@@ -1,0 +1,34 @@
+version: '3'
+
+tasks:
+
+  _:
+    label: "{{.SPACER}}"
+    desc: "{{.SPACER}}{{.SPACER}}"
+
+  install:
+    desc: install dependencies to run following scripts and debugging
+    cmds:
+      - SHELL=bash
+      - cmd: zsh < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
+        ignore_error: true
+      - source ~/.gvm/scripts/gvm
+      - SHELL=zsh
+
+  # reset:
+  #   desc: deletes and reinstalls the installed modules
+  #   cmds:
+  #     - cmd: sudo rm -r node_modules yarn.lock dist
+  #       ignore_error: true
+  #     - n auto
+  #     - yarn
+
+  start:
+    desc: run node app in watch mode
+    cmds:
+      - yarn start 2>&1 | tee ./logs/default.log
+
+  dev:
+    desc: run node app in watch mode
+    cmds:
+      - yarn dev 2>&1 | tee ./logs/default.log
